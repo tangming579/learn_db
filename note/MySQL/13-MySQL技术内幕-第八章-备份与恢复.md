@@ -42,4 +42,33 @@
 <div>
     <image src="img/6.png"></image>
 </div>
+#### 配置步骤
+
+##### master 机器的配置
+
+1. 修改配置文件
+
+```
+[mysqld]
+log-bin=/var/log/mysql/mysql-bin
+server-id=1
+```
+
+2. 应该创建一个专门用于复制数据的用户
+
+```
+mysql> CREATE USER 'repl'@'%' 
+mysql> GRANT REPLICATION SLAVE ON *.*  TO  'repl'@'%'  identified by 
+ 'QFedu123!';
+mysql> 
+```
+
+
+
+##### slave 机器的配置
+
+```
+bind-address = 0.0.0.0
+server-id = 106
+```
 
