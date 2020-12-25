@@ -76,3 +76,34 @@ bind-address = 0.0.0.0
 server-id = 106
 ```
 
+#### 注意点
+
+从节点要设置某些限定使得它不能进行写操作,才能保证复制当中的数据一致。
+
+#####  限制从服务器为只读
+在从服务器上设置：
+read_only = ON,但是此限制对拥有SUPER权限的用户均无效。
+阻止所有用户：
+mysq>FLUSH TABLES WITH READ LOCK;
+
+##### 如何保证主从复制时的事物安全
+
+主节点：
+
+sync_binlog=1： Mysql开启bin-log日志使用bin-log时，默认情况下，并不是每次执行写入就与硬盘同步，这样在服务器崩溃时，就可能导致bin-log最后的语句丢失。可以通过这个参数来调节
+
+```
+innodb_flush_logs_at_trx_commit=ON 刷写日志
+innodb_support_xa=ON (分布式事务：基于它来做两段式提交功能)
+sync_master_info=1：让从服务器中的 master_info 及时更新。
+```
+
+从节点：
+
+```
+skip_slave_start =ON (跳过自动启动，使用手动启动。)
+relay_log也会在内从中先缓存，然后在同步到relay_log中去，可以使用下面参数使其立即同步。
+sync_relay_log =1 ，默认为10000，即每10000次sync_relay_log事件会刷新到磁盘。为0则表示不刷新，交由OS的cache控制。
+sync_relay_log_info=1每间隔多少事务刷新relay-log.info，如果是table（innodb）设置无效，每个事务都会更新
+```
+
