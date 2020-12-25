@@ -46,15 +46,15 @@
 
 ##### master 机器的配置
 
-1. 修改配置文件
+1. 启用二进制日志。
+2. 为当前节点设置一个全局唯一的server_id。
+3. 创建有复制权限的用户账号 REPLIACTION SLAVE ,REPLIATION CLIENT。
 
 ```
 [mysqld]
 log-bin=/var/log/mysql/mysql-bin
 server-id=1
 ```
-
-2. 应该创建一个专门用于复制数据的用户
 
 ```
 mysql> CREATE USER 'repl'@'%' 
@@ -63,11 +63,15 @@ mysql> GRANT REPLICATION SLAVE ON *.*  TO  'repl'@'%'  identified by
 mysql> 
 ```
 
-
-
 ##### slave 机器的配置
 
+1. 启动中继日志。
+2. 为当前节点设置一个全局唯一的server_id。
+3. 使用有复制权限的用户账号连接至主节点，并启动复制线程。
+
 ```
+relay-log=relay-log
+relay-log-index=relay-log.index
 bind-address = 0.0.0.0
 server-id = 106
 ```
