@@ -11,9 +11,19 @@
 - 逻辑备份
 - 裸文件备份
 
+### 逻辑备份
+
+
+
 ### 快照备份
 
 
+
+### 热备
+
+#### XtraBackup
+
+地址：https://github.com/percona/percona-xtrabackup
 
 ### 复制
 
