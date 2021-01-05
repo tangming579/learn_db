@@ -75,9 +75,9 @@ Redis的集合和列表都可以存储多个字符串，他们之间的不同在
 | zrangebyscore | 获取有序集合在给定分值范围内的所有元素                     | zrangebyscore zset-key 0 800 withscores |
 | zrem          | 如果给定成员存在于有序集合，那么移除这个成员               | zrem zset-key member1                   |
 
-
-
 ### 其他特性
+
+
 
 ### 过期策略
 
